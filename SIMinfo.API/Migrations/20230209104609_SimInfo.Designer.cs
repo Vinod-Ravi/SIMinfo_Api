@@ -12,7 +12,7 @@ using SIMinfo.API.DataAccessLayer;
 namespace SIMinfo.API.Migrations
 {
     [DbContext(typeof(SimInfoDbContext))]
-    [Migration("20230203063928_SimInfo")]
+    [Migration("20230209104609_SimInfo")]
     partial class SimInfo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,41 @@ namespace SIMinfo.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SimInformation");
+                });
+
+            modelBuilder.Entity("SIMinfo.API.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

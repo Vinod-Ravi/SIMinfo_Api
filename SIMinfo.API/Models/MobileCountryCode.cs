@@ -9,6 +9,5 @@ namespace SIMinfo.API.Models
         public string? CountryCode { get; set; }
         public string? CountryName { get; set; }
         public string? CodeName { get; set; }
-
     }
 }

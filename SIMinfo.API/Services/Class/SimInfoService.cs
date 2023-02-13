@@ -9,11 +9,12 @@ namespace SIMinfo.API.Services.Class
     public class SimInfoService : ISimInfoService
     {
         private readonly SimInfoDbContext _simInfoDbContext;
-        public SimInfoService(SimInfoDbContext simInfoDbContext)
+        private readonly Messages _messages;
+        public SimInfoService(SimInfoDbContext simInfoDbContext, Messages messages)
         {
             _simInfoDbContext = simInfoDbContext;
+            _messages = messages;
         }
-
         public async Task<IEnumerable<SimInformation>> GetSimInformation()
         {
             var simInfo = await _simInfoDbContext.SimInformation.ToListAsync();
@@ -24,19 +25,22 @@ namespace SIMinfo.API.Services.Class
             return simInfo;
         }
 
-        public async Task<bool> SaveSimInformation([FromBody] SimInformation simInformation)
+        public async Task<Messages> SaveSimInformation([FromBody] SimInformation simInformation)
         {
             simInformation.Id = Guid.NewGuid();
             await _simInfoDbContext.SimInformation.AddAsync(simInformation);
             var simInfo = await _simInfoDbContext.SaveChangesAsync();
             if (simInfo.ToString() != null)
             {
-                return true;
+                _messages.Success = true;
+                _messages.Message = "Sim information submitted";
+                return _messages;
             }
-            return false;
+            _messages.Message = "Error in submitting sim information";
+            return _messages;
         }
 
-        public async Task<bool> UpdateSimInformation([FromRoute] Guid id, [FromBody] SimInformation simInformation)
+        public async Task<Messages> UpdateSimInformation([FromRoute] Guid id, [FromBody] SimInformation simInformation)
         {
             var existingSiminformation = await _simInfoDbContext.SimInformation.FirstOrDefaultAsync(x => x.Id == id);
             if (existingSiminformation != null)
@@ -51,20 +55,26 @@ namespace SIMinfo.API.Services.Class
                 existingSiminformation.CreatedDate = simInformation.CreatedDate;
                 existingSiminformation.CreatedUser = simInformation.CreatedUser;
                 await _simInfoDbContext.SaveChangesAsync();
-                return true;
+                _messages.Success = true;
+                _messages.Message = "Sim information updated";
+                return _messages;
             }
-            return false;
+            _messages.Message = "Error in updating sim information";
+            return _messages;
         }
-        public async Task<bool> DeleteSimInformation([FromRoute] Guid id)
+        public async Task<Messages> DeleteSimInformation([FromRoute] Guid id)
         {
             var siminformation = await _simInfoDbContext.SimInformation.FirstOrDefaultAsync(x => x.Id == id);
             if (siminformation != null)
             {
                 _simInfoDbContext.Remove(siminformation);
                 await _simInfoDbContext.SaveChangesAsync();
-                return true;
+                _messages.Success = true;
+                _messages.Message = "Sim information deleted";
+                return _messages;
             }
-            return false;
+            _messages.Message = "Error in deleting sim information";
+            return _messages;
         }
     }
 }

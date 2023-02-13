@@ -10,5 +10,7 @@ namespace SIMinfo.API.DataAccessLayer
         }
         public DbSet<SimInformation> SimInformation { get; set; }
         public DbSet<MobileCountryCode> MobileCountryCode { get; set; }
+        public DbSet<User> Users { get; set; }
+
     }
 }

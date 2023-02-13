@@ -6,8 +6,8 @@ namespace SIMinfo.API.Services.Interface
     public interface IMobileCountryCodeService
     {
         public Task<IEnumerable<MobileCountryCode>> GetMobileCountryCodes();
-        public Task<bool> SaveMobileCountryCode([FromBody] MobileCountryCode mobileCountryCode);
-        public Task<bool> UpdateMobileCountryCode([FromRoute] Guid id, [FromBody] MobileCountryCode mobileCountryCode);
-        public Task<bool> DeleteMobileCountryCode([FromRoute] Guid id);
+        public Task<Messages> SaveMobileCountryCode([FromBody] MobileCountryCode mobileCountryCode);
+        public Task<Messages> UpdateMobileCountryCode([FromRoute] Guid id, [FromBody] MobileCountryCode mobileCountryCode);
+        public Task<Messages> DeleteMobileCountryCode([FromRoute] Guid id);
     }
 }

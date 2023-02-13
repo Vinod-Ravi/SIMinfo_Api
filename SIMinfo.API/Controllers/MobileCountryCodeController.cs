@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SIMinfo.API.Models;
 using SIMinfo.API.Services.Class;
 using SIMinfo.API.Services.Interface;
@@ -16,14 +17,12 @@ namespace SIMinfo.API.Controllers
         {
             _mobileCountryCodeService = mobileCountryCodeService;
             _logger = logger;
-
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetMobileCountryCodes()
         {
             _logger.LogInformation("Getting Mobile country codes");
-
             var countryCodes = await _mobileCountryCodeService.GetMobileCountryCodes();
             if (countryCodes != null)
             {
@@ -37,10 +36,10 @@ namespace SIMinfo.API.Controllers
         {
             _logger.LogInformation("Saving Mobile country codes");
 
-            var countryCode = await _mobileCountryCodeService.SaveMobileCountryCode(mobileCountryCode);
-            if (countryCode == true)
+            var msg = await _mobileCountryCodeService.SaveMobileCountryCode(mobileCountryCode);
+            if (msg != null)
             {
-                return Ok(countryCode);
+                return Ok(msg);
             }
             throw new ApplicationException("Invalid");
         }
@@ -49,10 +48,10 @@ namespace SIMinfo.API.Controllers
         public async Task<IActionResult> UpdateMobileCountryCode([FromRoute] Guid id, [FromBody] MobileCountryCode mobileCountryCode)
         {
             _logger.LogInformation("Updating Mobile country codes");
-            var existingCountryCode = await _mobileCountryCodeService.UpdateMobileCountryCode(id, mobileCountryCode);
-            if (existingCountryCode == true)
+            var msg = await _mobileCountryCodeService.UpdateMobileCountryCode(id, mobileCountryCode);
+            if (msg != null)
             {
-                return Ok(mobileCountryCode);
+                return Ok(msg);
             }
             throw new ApplicationException("Invalid");
         }
@@ -61,11 +60,10 @@ namespace SIMinfo.API.Controllers
         public async Task<IActionResult> DeleteMobileCountryCode([FromRoute] Guid id)
         {
             _logger.LogInformation("Deleting Mobile country codes");
-
-            var existingCountryCode = await _mobileCountryCodeService.DeleteMobileCountryCode(id);
-            if (existingCountryCode == true)
+            var msg = await _mobileCountryCodeService.DeleteMobileCountryCode(id);
+            if (msg != null)
             {
-                return Ok(existingCountryCode);
+                return Ok(msg);
             }
             throw new ApplicationException("Invalid");
         }

@@ -1,4 +1,6 @@
-﻿namespace SIMinfo.API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SIMinfo.API.Models
 {
     public class ExceptionHandling
     {

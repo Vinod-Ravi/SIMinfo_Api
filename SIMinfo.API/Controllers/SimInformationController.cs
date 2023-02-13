@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SIMinfo.API.Migrations;
 using SIMinfo.API.Models;
 using SIMinfo.API.Services.Interface;
 
@@ -10,13 +12,12 @@ namespace SIMinfo.API.Controllers
     {
         private readonly ISimInfoService _simInfoService;
         private readonly ILogger<SimInformationController> _logger;
-
         public SimInformationController(ISimInfoService simInfoService, ILogger<SimInformationController> logger)
         {
             _simInfoService = simInfoService;
             _logger = logger;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllSimInformation()
         {
@@ -33,11 +34,10 @@ namespace SIMinfo.API.Controllers
         public async Task<IActionResult> SaveSimInformation([FromBody] SimInformation simInformation)
         {
             _logger.LogInformation("Saving SIM information");
-
-            var simInfo = await _simInfoService.SaveSimInformation(simInformation);
-            if (simInfo == true)
+            var msg = await _simInfoService.SaveSimInformation(simInformation);
+            if (msg != null)
             {
-                return Ok(simInformation);
+                return Ok(msg);
             }
             throw new ApplicationException("Invalid");
         }
@@ -47,10 +47,10 @@ namespace SIMinfo.API.Controllers
         public async Task<IActionResult> UpdateSimInformation([FromRoute] Guid id, [FromBody] SimInformation simInformation)
         {
             _logger.LogInformation("Updating SIM information");
-            var existingSiminformation = await _simInfoService.UpdateSimInformation(id, simInformation);
-            if (existingSiminformation == true)
+            var msg = await _simInfoService.UpdateSimInformation(id, simInformation);
+            if (msg != null)
             {
-                return Ok(simInformation);
+                return Ok(msg);
             }
             throw new ApplicationException("Invalid");
         }
@@ -60,10 +60,10 @@ namespace SIMinfo.API.Controllers
         {
             _logger.LogInformation("Deleting SIM information");
 
-            var existingSiminformation = await _simInfoService.DeleteSimInformation(id);
-            if (existingSiminformation == true)
+            var msg = await _simInfoService.DeleteSimInformation(id);
+            if (msg != null)
             {
-                return Ok(existingSiminformation);
+                return Ok(msg);
             }
             throw new ApplicationException("Invalid");
         }
