@@ -43,5 +43,17 @@ namespace SIMinfo.API.Controllers
             }
             throw new ApplicationException("Invalid");
         }
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] Messages message)
+        {
+            _logger.LogInformation("Token refresh");
+            var msg = await _authenticationService.Refresh(message);
+            if (msg != null)
+            {
+                return Ok(msg);
+            }
+            throw new ApplicationException("Invalid");
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SIMinfo.API.DataAccessLayer;
@@ -11,9 +12,10 @@ using SIMinfo.API.DataAccessLayer;
 namespace SIMinfo.API.Migrations
 {
     [DbContext(typeof(SimInfoDbContext))]
-    partial class SimInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230215051241_AddedRefreshToken")]
+    partial class AddedRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

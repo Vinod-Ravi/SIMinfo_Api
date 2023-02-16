@@ -14,5 +14,8 @@ namespace SIMinfo.API.Models
         public string? Role { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Token { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime RefeshTokenExpiryTime { get; set; }
+
     }
 }
